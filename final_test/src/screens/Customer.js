@@ -34,6 +34,9 @@ class Customer extends Component{
     await this.getToken()
     await this.getId()
     this.showCustomer()
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      this.showCustomer()
+    })
     
   }
 
@@ -71,15 +74,27 @@ class Customer extends Component{
               keyExtractor = {item => item.id}
               renderItem = {({item}) => 
               <View>
-                  <TouchableOpacity
-                      
-                  >
-                    <Text>{item.name}</Text>
-                    <Text>{item.identity_number}</Text>
-                    <Text>{item.phone_number}</Text>
-                  </TouchableOpacity> 
+                <TouchableOpacity   
+                  onPress={() => this.props.navigation.navigate('EditCustomer',{
+                    customerId: item.id,
+                    name: item.name,
+                    phoneNumber: item.phone_number,
+                    identityNumber: item.identity_number
+                  })}
+                >
+                  <Text>{item.name}</Text>
+                  <Text>{item.identity_number}</Text>
+                  <Text>{item.phone_number}</Text>
+                </TouchableOpacity> 
               </View>
               }/>  
+              <View>
+                <TouchableOpacity
+                    onPress={() => this.props.navigation.navigate('AddCustomer')}
+                  >
+                  <Text>tambah</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </Content>

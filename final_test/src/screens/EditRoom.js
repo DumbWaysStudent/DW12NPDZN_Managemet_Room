@@ -51,7 +51,7 @@ export default class EditRoom extends Component{
       }))
   }
 
-  AddRoom = () => {
+  EditRoom = () => {
     axios({
       method: 'PUT',
       headers: {
@@ -87,7 +87,7 @@ export default class EditRoom extends Component{
           <View>
             <Row>
               <Button onPress={() => this.props.navigation.navigate('Room')}><Text>Cancel</Text></Button>
-              <Button onPress={() => this.AddRoom()}><Text>Save</Text></Button>
+              <Button onPress={() => this.EditRoom()}><Text>Save</Text></Button>
             </Row>    
           </View>
         </Content>

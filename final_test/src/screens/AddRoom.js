@@ -77,7 +77,7 @@ export default class AddRoom extends Component{
             <Text>Add Room</Text>
             <Text>Room Name</Text>
             <TextInput
-              placeholder='Room Name'
+              placeholder=''
               onChangeText={name => this.setState({ name })}
               style= {{borderWidth: 2, borderColor: 'black', marginTop: 7, borderRadius: 100, fontSize:20, textAlign:'center'}}
             />
