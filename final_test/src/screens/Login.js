@@ -139,7 +139,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
               success disabled = {this.state.isDisabled} rounded block style={styles.button}
               onPress={() => this.userLogin() }
               >
-                <Text >SIGN IN</Text>
+                <Text >LOG IN</Text>
               </Button>
               
               

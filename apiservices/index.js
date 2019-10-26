@@ -34,7 +34,8 @@ const { authenticated } = require('./middleware')
 app.group("/api/v1", (router) => {
 
 	router.post('/login', AuthController.login)
-	
+	router.get('/user/:id', authenticated, AuthController.show)
+
 	router.get('/rooms', authenticated, RoomController.roomIndex)
 	router.post('/room', authenticated, RoomController.roomStore)
 	router.put('/room/:roomId', authenticated, RoomController.roomUpdate)
