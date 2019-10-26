@@ -27,6 +27,8 @@ import AddRoom from './src/screens/AddRoom'
 import EditRoom from './src/screens/EditRoom'
 import AddCustomer from './src/screens/AddCustomer'
 import EditCustomer from './src/screens/EditCustomer'
+import AddCheckin from './src/screens/AddCheckin'
+import Checkout from './src/screens/Checkout'
 
 import store from './src/_redux/store'
 
@@ -68,7 +70,15 @@ const CheckinStack = createStackNavigator(
     Checkin: {
       screen:Checkin,
       title: 'Check In',
-    }
+    },
+    AddCheckin: {
+      screen:AddCheckin,
+      title: 'Add Check In',
+    },
+    Checkout: {
+      screen:Checkout,
+      title: 'Check Out',
+    },
   },
   {
     initialRouteName: 'Checkin',

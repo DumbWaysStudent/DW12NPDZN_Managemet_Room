@@ -81,20 +81,20 @@ class Checkin extends Component{
                 {this.state.orderList.includes(item.id)?
                 (<View style={{borderWidth: 1, backgroundColor: '#42f58a'}}>
                   <TouchableOpacity
-                    // onPress={() => this.props.navigation.navigate('EditRoom',{
-                    //   roomId: item.id,
-                    //   name: item.name
-                    // })}
+                    onPress={() => this.props.navigation.navigate('AddCheckin',{
+                      roomId: item.id,
+                      name: item.name
+                    })}
                   >
                       <Text>{item.name}</Text>
                   </TouchableOpacity> 
                 </View>):
                 (<View style={{borderWidth: 1, backgroundColor: '#bac2bd'}}>
                   <TouchableOpacity
-                    // onPress={() => this.props.navigation.navigate('EditRoom',{
-                    //   roomId: item.id,
-                    //   name: item.name
-                    // })}
+                    onPress={() => this.props.navigation.navigate('Checkout',{
+                      roomId: item.id,
+                      name: item.name
+                    })}
                   >
                       <Text>{item.name}</Text>
                   </TouchableOpacity> 

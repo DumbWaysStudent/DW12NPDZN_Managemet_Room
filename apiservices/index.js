@@ -45,8 +45,6 @@ app.group("/api/v1", (router) => {
 	router.put('/customer/:customerId', authenticated, RoomController.customerUpdate)
 
 	router.get('/checkin', authenticated, RoomController.orderIndex)
-	// router.get('/checkin', authenticated, RoomController.orderIndex2)
-
 	router.post('/checkin', authenticated, RoomController.orderStore)
 	router.put('/order/:orderId', authenticated, RoomController.orderUpdate)
 

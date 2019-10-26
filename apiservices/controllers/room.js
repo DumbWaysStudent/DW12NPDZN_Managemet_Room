@@ -66,7 +66,7 @@ exports.customerUpdate = (req,res) => {
 
 exports.orderIndex = (req,res) => {
     Order.findAll({
-        where: {is_done : true },
+        where: {is_done : false },
         include: [
             {
                 model: Room,
@@ -77,14 +77,6 @@ exports.orderIndex = (req,res) => {
             }]  
     }).then(order=>res.send(order))
 }
-
-// exports.orderIndex2 = (req,res) => {
-//     Room.findAll({ 
-//         include: {
-//             model: Order,
-//             as: "order"
-//         }})
-// }
 
 exports.orderStore = (req,res) => {
     Order.create({
