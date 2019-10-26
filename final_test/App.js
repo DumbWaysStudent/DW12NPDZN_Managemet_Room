@@ -128,13 +128,13 @@ const BottomTab = createBottomTabNavigator({
       const { routeName } = navigation.state;
       let iconName;
       if (routeName === 'Checkin') {
-        iconName = `microsoft`;
+        iconName = `check-circle`;
       } else if (routeName === 'Room') {
-        iconName = `star`;
+        iconName = `bed`;
       } else if (routeName === 'Customer') {
-        iconName = `star`;
+        iconName = `id-card`;
       } else if (routeName === 'Setting') {
-        iconName = `user`;}
+        iconName = `cog`;}
     return <Icon type="FontAwesome5" name={iconName} size={25} style={{color: tintColor,}} />;
     },
   }),

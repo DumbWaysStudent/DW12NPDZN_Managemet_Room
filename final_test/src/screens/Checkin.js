@@ -60,9 +60,6 @@ class Checkin extends Component{
     this.props.getOrder(id = this.state.id, token = this.state.token)
     this.setState({orderList: this.props.order.order.map(res => res.room_id)})
     this.props.getRoom(id = this.state.id, token = this.state.token)
-    console.log(this.state.orderList, ">>>>>>>...")
-    console.log(this.props.order, ">>>>>>>...")
-    console.log(this.props.room, ">>>>>>>...")
   }
 
   render(){
@@ -78,17 +75,7 @@ class Checkin extends Component{
               keyExtractor = {item => item.id}
               renderItem = {({item}) => 
               <View>
-                {this.state.orderList.includes(item.id)?
-                (<View style={{borderWidth: 1, backgroundColor: '#42f58a'}}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('AddCheckin',{
-                      roomId: item.id,
-                      name: item.name
-                    })}
-                  >
-                      <Text>{item.name}</Text>
-                  </TouchableOpacity> 
-                </View>):
+                {!this.state.orderList.includes(item.id)?
                 (<View style={{borderWidth: 1, backgroundColor: '#bac2bd'}}>
                   <TouchableOpacity
                     onPress={() => this.props.navigation.navigate('Checkout',{
@@ -98,9 +85,18 @@ class Checkin extends Component{
                   >
                       <Text>{item.name}</Text>
                   </TouchableOpacity> 
-                </View>)}
-                
-                
+                </View>):
+              (<View style={{borderWidth: 1, backgroundColor: '#42f58a'}}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('AddCheckin',{
+                    roomId: item.id,
+                    name: item.name
+                  })}
+                >
+                    <Text>{item.name}</Text>
+                </TouchableOpacity> 
+              </View>)
+              }
               </View>
             }/>  
             </View>

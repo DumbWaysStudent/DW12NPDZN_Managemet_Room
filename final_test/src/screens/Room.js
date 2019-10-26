@@ -73,7 +73,7 @@ class Room extends Component{
             data = {this.props.room.room}
             keyExtractor = {item => item.id}
             renderItem = {({item}) => 
-            <View>
+            <View style={{borderWidth: 1}}>
               <TouchableOpacity
                 onPress={() => this.props.navigation.navigate('EditRoom',{
                   roomId: item.id,
