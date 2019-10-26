@@ -27,3 +27,16 @@ export const getCustomer = (id, token) => {
       url: `${config.API_URL}/customers`
     })
   }}
+
+  export const getOrder = (id, token) => {
+    return {
+      type: 'GET_ORDERS',
+      payload: axios({
+        method: 'GET',
+        headers: {
+            'content-type': 'application/json',
+            'authorization': `Bearer ${token}`
+          },
+        url: `${config.API_URL}/checkin`
+      })
+    }}

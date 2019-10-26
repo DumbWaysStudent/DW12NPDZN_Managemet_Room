@@ -66,6 +66,7 @@ exports.customerUpdate = (req,res) => {
 
 exports.orderIndex = (req,res) => {
     Order.findAll({
+        where: {is_done : true },
         include: [
             {
                 model: Room,
