@@ -8,6 +8,8 @@ import {
   Input, 
   Button, 
   Header,
+  Body,
+  Title,
   Row,
   Icon,  
 
@@ -27,7 +29,7 @@ class Checkin extends Component{
     this.state = {
       id: null,
       token: null,
-      orderList: []
+      // orderList: []
     }
   }
 
@@ -58,50 +60,55 @@ class Checkin extends Component{
 
   showOrder = () => {
     this.props.getOrder(id = this.state.id, token = this.state.token)
-    this.setState({orderList: this.props.order.order.map(res => res.room_id)})
-    this.props.getRoom(id = this.state.id, token = this.state.token)
   }
 
   render(){
 
     return(
       <Container>
-        <Content>
-          <View>
-            
-            <View>
-              <FlatList
-              data = {this.props.room.room}
-              keyExtractor = {item => item.id}
-              renderItem = {({item}) => 
-              <View>
-                {!this.state.orderList.includes(item.id)?
-                (<View style={{borderWidth: 1, backgroundColor: '#bac2bd'}}>
+        <View style={{ flex: 1, backgroundColor: '#f27980'}}>
+          <Header style={{backgroundColor: "#5dadec" }}>
+            <Body style={{alignItems: 'center'}}>
+                <Title style={{fontWeight: 'bold', color:'black'}}>Check In</Title>
+            </Body>
+          </Header>
+          <Content padder >
+            <View>  
+              <View style={{flex:1, alignItems: "center"}}>
+                <FlatList
+                data = {this.props.order.order}
+                keyExtractor = {item => item.id}
+                numColumns={3}
+                renderItem = {({item}) => 
+                <View >
+                  {item.customer.length > 0 ?
+                  (<View style={[styles.card,{backgroundColor: '#bac2bd'}]}>
+                    <TouchableOpacity
+                      onPress={() => this.props.navigation.navigate('Checkout',{
+                        roomId: item.id,
+                        name: item.name
+                      })}
+                    >
+                        <Text style={styles.roomText}>{item.name}</Text>
+                    </TouchableOpacity> 
+                  </View>):
+                (<View style={[styles.card, {backgroundColor: '#42f58a'}]}>
                   <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('Checkout',{
+                    onPress={() => this.props.navigation.navigate('AddCheckin',{
                       roomId: item.id,
                       name: item.name
                     })}
                   >
-                      <Text>{item.name}</Text>
+                      <Text style={styles.roomText}>{item.name}</Text>
                   </TouchableOpacity> 
-                </View>):
-              (<View style={{borderWidth: 1, backgroundColor: '#42f58a'}}>
-                <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate('AddCheckin',{
-                    roomId: item.id,
-                    name: item.name
-                  })}
-                >
-                    <Text>{item.name}</Text>
-                </TouchableOpacity> 
-              </View>)
-              }
+                </View>)
+                }
+                </View>
+              }/>  
               </View>
-            }/>  
             </View>
-          </View>
-        </Content>
+          </Content>
+        </View>
       </Container>
     )
   }
@@ -127,5 +134,17 @@ export default connect(
 )(Checkin)
 
 const styles = StyleSheet.create({
-
+  card: {
+    width: 120, 
+    margin: 5,
+    height: 120,
+    justifyContent: 'center',
+    borderRadius: 10
+  },
+  roomText: {
+    textAlign: 'center',
+    fontSize: 30,
+    color: '#5e5757',
+    fontWeight: 'bold'
+  }
 })

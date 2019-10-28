@@ -1,5 +1,7 @@
 const multer = require('multer')
+const moment = require('moment');
 const models = require('../models')
+
 
 const User = models.user
 const Room = models.room
@@ -78,6 +80,23 @@ exports.orderIndex = (req,res) => {
     }).then(order=>res.send(order))
 }
 
+exports.orderRoomIndex = (req,res) => {
+    Room.findAll({
+        include: 
+            {
+                model: Customer,
+                as: 'customer',   
+                attributes: {exclude: ['createdAt', 'updatedAt']},
+                through: {
+                    model: Order,
+                    where: {is_done: false},
+                    attributes: {exclude: ['createdAt', 'updatedAt']},
+                }     
+            },
+        attributes: {exclude: ['createdAt', 'updatedAt']},            
+    }).then(order=>{res.send(order)})
+}
+
 exports.orderStore = (req,res) => {
     Order.create({
         room_id: req.body.room_id,
@@ -85,7 +104,7 @@ exports.orderStore = (req,res) => {
         is_done: false,
         is_booked: true,
         duration: req.body.duration,
-        order_end_time: new Date()
+        order_end_time: moment().add(req.body.duration, 'minutes')
     })
     .then(order=>{res.send({
         order,
@@ -100,7 +119,7 @@ exports.orderUpdate = (req,res) => {
         is_done: true,
         is_booked: false,
         duration: req.body.duration,
-        order_end_time: new Date()
+        order_end_time: moment().add(req.body.duration, 'minutes')
     },
     {where: 
         {id: req.params.orderId

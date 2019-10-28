@@ -8,6 +8,9 @@ import {
   Input, 
   Button, 
   Header,
+  Body,
+  Fab,
+  Title,
   Row,
   Icon,  
   } 
@@ -65,39 +68,52 @@ class Customer extends Component{
 
     return(
       <Container>
-        <Content>
-          <View>
-            
+        <View style={{ flex: 1, backgroundColor: '#f27980'}}>
+          <Header style={{backgroundColor: "#5dadec" }}>
+            <Body style={{alignItems: 'center'}}>
+                <Title style={{fontWeight: 'bold', color:'black'}}>Customer</Title>
+            </Body>
+          </Header>
+          <Content padder>
             <View>
-            <FlatList
-              data = {this.props.customer.customer}
-              keyExtractor = {item => item.id}
-              renderItem = {({item}) => 
-              <View>
-                <TouchableOpacity   
-                  onPress={() => this.props.navigation.navigate('EditCustomer',{
-                    customerId: item.id,
-                    name: item.name,
-                    phoneNumber: item.phone_number,
-                    identityNumber: item.identity_number
-                  })}
-                >
-                  <Text>{item.name}</Text>
-                  <Text>{item.identity_number}</Text>
-                  <Text>{item.phone_number}</Text>
-                </TouchableOpacity> 
-              </View>
-              }/>  
-              <View>
-                <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('AddCustomer')}
+              <View >
+              <FlatList
+                data = {this.props.customer.customer}
+                keyExtractor = {item => item.id}
+                renderItem = {({item}) => 
+                <View style={styles.card}>
+                  <TouchableOpacity   
+                    onPress={() => this.props.navigation.navigate('EditCustomer',{
+                      customerId: item.id,
+                      name: item.name,
+                      phoneNumber: item.phone_number,
+                      identityNumber: item.identity_number
+                    })}
                   >
-                  <Text>tambah</Text>
-                </TouchableOpacity>
+                    <Row>
+                      <Image style={styles.Img} source={require('./user.png')}></Image>
+                      <View style={{justifyContent: 'center', marginLeft: 5}}>
+                        <Text style={styles.customer}>{item.name}</Text>
+                        <Text style={styles.subCustomer}>{item.identity_number}</Text>
+                        <Text style={styles.subCustomer}>{item.phone_number}</Text>
+                      </View>
+                    </Row>
+                  </TouchableOpacity> 
+                </View>
+                }/>  
               </View>
             </View>
-          </View>
-        </Content>
+          </Content>
+          <Fab
+            style={{ backgroundColor: '#5dadec' }}
+            position="bottomRight" 
+          >
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('AddCustomer')}>
+              <Icon type="FontAwesome" name="plus" style={{color: "white" }}/>
+            </TouchableOpacity>
+            
+          </Fab>
+        </View>
       </Container>
     )
   }
@@ -120,5 +136,30 @@ export default connect(
 )(Customer)
 
 const styles = StyleSheet.create({
-
+  card: {
+    borderWidth: 1, 
+    margin: 5,
+    padding: 5,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    borderRadius: 10,
+    borderColor: 'white',
+  },
+  customer: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginBottom: 5
+  },
+  subCustomer: {
+    fontSize: 12
+  },
+  Img: {
+    borderWidth: 1, 
+    borderColor: "black", 
+    alignSelf: 'center',
+    margin: 5,
+    width: 75, 
+    height:75, 
+    borderRadius: 100,
+  },
 })

@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
   order.associate = function(models) {
     order.belongsTo(models.room,{
       foreignKey: 'room_id',
-      as: 'roomId'
+      
     }),
     order.belongsTo(models.customer,{
       foreignKey: 'customer_id',
-      as: 'customerId'
+      
     })
     
   };

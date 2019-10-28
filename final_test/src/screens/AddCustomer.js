@@ -7,6 +7,8 @@ import {
   Item, 
   Input, 
   Button, 
+  Body,
+  Title,
   Header,
   Row,
   Icon,  
@@ -70,46 +72,92 @@ export default class AddCustomer extends Component{
     })
   }
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+        title: "Add Customer",
+        headerStyle: {
+            backgroundColor: '#5dadec',
+            },
+        headerTitleStyle: {
+            fontWeight: 'bold',
+        },
+      };
+    }
+
  
 
   render(){
 
     return(
       <Container>
-        <Content>
-          <View>
-            <Text>Add Customer</Text>
-            <Text>Name</Text>
-            <TextInput
-              placeholder=''
-              onChangeText={name => this.setState({ name })}
-              style= {{borderWidth: 2, borderColor: 'black', marginTop: 7, borderRadius: 100, fontSize:20, textAlign:'center'}}
-            />
-            <Text>Identity Number</Text>
-            <TextInput
-              placeholder=''
-              onChangeText={identity_number => this.setState({ identity_number })}
-              style= {{borderWidth: 2, borderColor: 'black', marginTop: 7, borderRadius: 100, fontSize:20, textAlign:'center'}}
-            />
-            <Text>Phone Number</Text>
-            <TextInput
-              placeholder=''
-              onChangeText={phone_number => this.setState({ phone_number })}
-              style= {{borderWidth: 2, borderColor: 'black', marginTop: 7, borderRadius: 100, fontSize:20, textAlign:'center'}}
-            />
-          </View>
-          <View>
-            <Row>
-              <Button onPress={() => this.props.navigation.navigate('Customer')}><Text>Cancel</Text></Button>
-              <Button onPress={() => this.AddCustomer()}><Text>Save</Text></Button>
-            </Row>    
-          </View>
-        </Content>
+        <View style={{ flex: 1, backgroundColor: '#f27980', justifyContent: 'center'}}>
+          <Content padder style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
+            <View style={{flex: 1, justifyContent: 'center'}}>
+              <Text style={styles.label}>Name</Text>
+              <TextInput
+                placeholder=''
+                onChangeText={name => this.setState({ name })}
+                style= {styles.TextInput}
+              />
+              <Text style={styles.label}>Identity Number</Text>
+              <TextInput
+                placeholder=''
+                onChangeText={identity_number => this.setState({ identity_number })}
+                style= {styles.TextInput}
+              />
+              <Text style={styles.label}>Phone Number</Text>
+              <TextInput
+                placeholder=''
+                onChangeText={phone_number => this.setState({ phone_number })}
+                style= {styles.TextInput}
+              />
+              <View style={styles.buttonContainer}>
+                <Row>
+                  <Button style={styles.ButtonCancel} onPress={() => this.props.navigation.navigate('Customer')}>
+                    <Text>Cancel</Text>
+                  </Button>
+                  <Button style={styles.ButtonSave} onPress={() => this.AddCustomer()}>
+                    <Text>Save</Text>
+                  </Button>
+                </Row>    
+              </View>
+            </View>   
+          </Content>
+        </View>
       </Container>
     )
   }
 }
 
 const styles = StyleSheet.create({
-
+  TextInput: {
+    borderWidth: 2, 
+    borderColor: 'black', 
+    marginTop: 5, 
+    borderRadius: 10, 
+    backgroundColor: 'white',
+    fontSize:20, 
+    paddingHorizontal: 10
+  },
+  label: {
+    marginTop: 5,
+    fontWeight: 'bold'
+  },
+  buttonContainer: {
+    marginTop: 15,
+    alignItems: 'center',
+  },
+  ButtonCancel: {
+    marginHorizontal: 5,
+    borderRadius: 5,
+    backgroundColor: '#883444'
+  },
+  ButtonSave: {
+    marginHorizontal: 5,
+    width: 90,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    backgroundColor: '#0061b0'
+  }
 })

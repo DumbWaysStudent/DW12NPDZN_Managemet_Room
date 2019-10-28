@@ -86,6 +86,11 @@ export default class Checkout extends Component{
               style= {{borderWidth: 2, borderColor: 'black', marginTop: 7, borderRadius: 100, fontSize:20, textAlign:'center'}}
             />
             <Text>Customer</Text>
+            {/* <TextInput
+              value={this.state.costumer}
+              editable={false}
+              style= {{borderWidth: 2, borderColor: 'black', marginTop: 7, borderRadius: 100, fontSize:20, textAlign:'center'}}
+            /> */}
             <Text>Duration Left (minutes)</Text>
             <TextInput
               placeholder=''
@@ -98,7 +103,7 @@ export default class Checkout extends Component{
           <View>
             <Row>
               <Button onPress={() => this.props.navigation.navigate('Checkin')}><Text>Cancel</Text></Button>
-              <Button onPress={() => this.Checkout()}><Text>Save</Text></Button>
+              <Button onPress={() => this.Checkout()}><Text>Check Out</Text></Button>
             </Row>    
           </View>
         </Content>

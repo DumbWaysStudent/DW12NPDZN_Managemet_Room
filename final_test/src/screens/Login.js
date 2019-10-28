@@ -11,7 +11,7 @@ import {
   Icon,  
   } 
   from 'native-base';
-import { StyleSheet, Image} from 'react-native'
+import { StyleSheet, Image, Dimensions} from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-community/async-storage'
 import config from '../../config-env'
@@ -31,6 +31,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
         id: null
         
       }}
+      
 
 
     userLogin = () => {
@@ -105,46 +106,46 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
     render(){    
       return(
-        <Container>
-        
-        <Content padder >
-          
-            <View style={styles.title}>
-              
-              <Text style={styles.login}>Log In</Text>
-              
+        <Container  >   
+        <Content style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
+          <View style={styles.container} >
+            <View style={{alignItems: 'center'}}>
+              <Image style={styles.logo} source={require('./nyenyak.png')}/>
             </View>
-            
-            <View style={styles.container}>
-              <Form >
-                <Text style={styles.label}>Username</Text>
-                <Item rounded>
-                  <Input 
-                  placeholder="" 
-                  keyboardType= "email-address" 
-                  onChangeText={username =>this.userValidation(username)}
-                  />
-                </Item>
-                <Text style={styles.label}>Password</Text>
-                <Item rounded>
-                  <Input 
-                  secureTextEntry= {this.state.pass} 
-                  placeholder="" 
-                  onChangeText={password => this.passValidation(password)}
-                  />
-                  <Icon name={this.state.icon} onPress={()=>this.changeIcon()}/>
-                </Item>
-              </Form>
-              <Button 
-              success disabled = {this.state.isDisabled} rounded block style={styles.button}
-              onPress={() => this.userLogin() }
-              >
-                <Text >LOG IN</Text>
-              </Button>
+            <View style={styles.center}>
+              <View style={styles.title}>
+                <Text style={styles.login}>Welcome Admin</Text> 
+              </View>
               
-              
+              <View style={styles.form}>
+                <Form >
+                  <Text style={styles.label}>Username</Text>
+                  <Item rounded>
+                    <Input 
+                    placeholder="" 
+                    keyboardType= "email-address" 
+                    onChangeText={username =>this.userValidation(username)}
+                    />
+                  </Item>
+                  <Text style={styles.label}>Password</Text>
+                  <Item rounded>
+                    <Input 
+                    secureTextEntry= {this.state.pass} 
+                    placeholder="" 
+                    onChangeText={password => this.passValidation(password)}
+                    />
+                    <Icon name={this.state.icon} onPress={()=>this.changeIcon()}/>
+                  </Item>
+                </Form>
+                <Button 
+                warning disabled = {this.state.isDisabled} rounded block style={styles.button}
+                onPress={() => this.userLogin() }
+                >
+                  <Text >LOG IN</Text>
+                </Button>   
+              </View>
             </View>
-
+          </View>
         </Content>
       </Container>
       )
@@ -152,36 +153,40 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
   }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#f27980',
+  },
+  center: {
+    backgroundColor: 'white',
+    margin: 15,
+    paddingVertical: 30,
+    borderRadius: 15,
+    opacity: 0.75,
+  },
   title:{
     alignItems: "center", 
-    marginTop:45, 
     marginBottom:10, 
-    fontFamily: 'Austin-Light'
+    fontFamily: 'Austin-Light',
   },
   logo:{
     width: 200,
-    height: 200
+    height: 200,
   },
   login: {
-    fontSize: 35, 
-   
+    fontSize: 25, 
   },
-  container: {
-    paddingHorizontal: 20
+  form: {
+    paddingHorizontal: 20,
   },
   label: {
     padding: 5,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    
   },
   button:{
     marginTop: 20,
-  },
-  skip: {
-    alignItems: 'center',
-    marginTop: 35,
-  },
-  skipText: {
-    color: '#66cdaa',
-    
+    marginBottom: 10
   }
 })

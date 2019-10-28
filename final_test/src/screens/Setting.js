@@ -66,14 +66,20 @@ class Setting extends Component{
 
     return(
       <Container>
-        <Content>
-          <View>
-           
+        <View style={{ flex: 1, backgroundColor: '#f27980', justifyContent: 'center'}}>
+        <Header style={{backgroundColor: "#5dadec" }}>
+          <Body style={{alignItems: 'center'}}>
+              <Title style={{fontWeight: 'bold', color:'black'}}>Admin</Title>
+          </Body>
+        </Header>
+        <Content style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
+          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <Image style={styles.Img} source={{uri: this.props.user.user.image }}/>
-            <Text>{this.props.user.user.email}</Text>
-            <Text>{this.props.user.user.username}</Text>
+            <Text style={styles.emailText}>{this.props.user.user.email}</Text>
+            <Text style={styles.nameText}>{this.props.user.user.username}</Text>
             <View>
             <TouchableOpacity
+              style={styles.logout}
               onPress={() => this.logout()}
               >
                 <Text>Log Out</Text>
@@ -81,10 +87,12 @@ class Setting extends Component{
             </View>
           </View>
         </Content>
+        </View>
       </Container>
     )
   }
 }
+
 
 const mapStateToProps = state => {
   return {
@@ -108,7 +116,26 @@ const styles = StyleSheet.create({
     borderWidth: 2, 
     borderColor: "black", 
     alignSelf: 'center',
-    width: 200, 
-    height:200, 
-    borderRadius: 100},
+    margin: 10,
+    width: 180, 
+    height:180, 
+    borderRadius: 100,
+  },
+  emailText: {
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  nameText: {
+    fontSize: 17,
+    marginBottom: 25
+  },
+  logout: {
+    borderWidth: 1,
+    borderColor: 'black',
+    margin: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 5,
+    backgroundColor: '#ffc53a',
+  }
 })

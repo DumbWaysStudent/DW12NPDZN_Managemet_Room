@@ -17,7 +17,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import axios from 'axios'
 import config from '../../config-env'
 import AsyncStorage from '@react-native-community/async-storage'
-
+import ModalDropdown from 'react-native-modal-dropdown';
 
 export default class AddCheckin extends Component{
 
@@ -85,6 +85,7 @@ export default class AddCheckin extends Component{
               style= {{borderWidth: 2, borderColor: 'black', marginTop: 7, borderRadius: 100, fontSize:20, textAlign:'center'}}
             />
             <Text>Customer</Text>
+            <ModalDropdown options={['option 1', 'option 2']}/>
             <Text>Duration (minutes)</Text>
             <TextInput
               placeholder=''
@@ -96,7 +97,7 @@ export default class AddCheckin extends Component{
           <View>
             <Row>
               <Button onPress={() => this.props.navigation.navigate('Checkin')}><Text>Cancel</Text></Button>
-              <Button><Text>Save</Text></Button>
+              <Button><Text>Check In</Text></Button>
             </Row>    
           </View>
         </Content>

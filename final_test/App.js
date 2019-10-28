@@ -23,8 +23,6 @@ import Checkin from './src/screens/Checkin'
 import Customer from './src/screens/Customer'
 import Setting from './src/screens/Setting'
 import Login from './src/screens/Login'
-import AddRoom from './src/screens/AddRoom'
-import EditRoom from './src/screens/EditRoom'
 import AddCustomer from './src/screens/AddCustomer'
 import EditCustomer from './src/screens/EditCustomer'
 import AddCheckin from './src/screens/AddCheckin'
@@ -50,15 +48,8 @@ const RoomStack = createStackNavigator(
     Room: {
       screen: Room,
       title: 'Room',
+      navigationOptions: {header: null},
     },
-    AddRoom: {
-      screen: AddRoom,
-      title: 'Add Room',
-    },
-    EditRoom: {
-      screen: EditRoom,
-      title: 'Edit Room',
-    }
   },
   {
     initialRouteName: 'Room',
@@ -70,6 +61,7 @@ const CheckinStack = createStackNavigator(
     Checkin: {
       screen:Checkin,
       title: 'Check In',
+      navigationOptions: {header: null},
     },
     AddCheckin: {
       screen:AddCheckin,
@@ -90,6 +82,7 @@ const SettingStack = createStackNavigator(
     Setting: {
       screen:Setting,
       title: 'Setting',
+      navigationOptions: {header: null},
     }
   },
   {
@@ -102,6 +95,7 @@ const CustomerStack = createStackNavigator(
     Customer: {
       screen:Customer,
       title: 'Customer',
+      navigationOptions: {header: null},
     },
     AddCustomer: {
       screen:AddCustomer,
@@ -140,11 +134,11 @@ const BottomTab = createBottomTabNavigator({
   }),
   tabBarOptions: {
     activeTintColor: 'black',
-    inactiveTintColor: '#E1F7D5',
+    inactiveTintColor: '#e5dddd',
     showLabel:false,
     keyboardHidesTabBar: true,
     style:{
-    backgroundColor: '#22bb33',
+    backgroundColor: '#5dadec',
   }} 
 })
 
