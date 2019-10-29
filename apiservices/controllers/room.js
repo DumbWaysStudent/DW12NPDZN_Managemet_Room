@@ -82,18 +82,16 @@ exports.orderIndex = (req,res) => {
 
 exports.orderRoomIndex = (req,res) => {
     Room.findAll({
-        include: 
+        include: [
             {
                 model: Customer,
-                as: 'customer',   
-                attributes: {exclude: ['createdAt', 'updatedAt']},
                 through: {
                     model: Order,
                     where: {is_done: false},
-                    attributes: {exclude: ['createdAt', 'updatedAt']},
                 }     
-            },
-        attributes: {exclude: ['createdAt', 'updatedAt']},            
+            }
+        ]
+            
     }).then(order=>{res.send(order)})
 }
 

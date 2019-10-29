@@ -12,14 +12,15 @@ import {
   Icon,  
   } 
   from 'native-base';
-import { StyleSheet, ScrollView, Dimensions, Image} from 'react-native'
+import { StyleSheet, ScrollView, Dimensions, Image, Picker} from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
 import axios from 'axios'
 import config from '../../config-env'
 import AsyncStorage from '@react-native-community/async-storage'
-import ModalDropdown from 'react-native-modal-dropdown';
+import {connect} from 'react-redux'
+import * as act from '../_actions/room'
 
-export default class AddCheckin extends Component{
+class AddCheckin extends Component{
 
   constructor(props){
       super(props);
@@ -28,7 +29,8 @@ export default class AddCheckin extends Component{
         token: null,
         name: this.props.navigation.getParam('name'),
         roomId: this.props.navigation.getParam('roomId'),
-        duration: null
+        duration: null,
+        customer: ''
       }
     }
   
@@ -36,6 +38,7 @@ export default class AddCheckin extends Component{
   async componentDidMount(){
     await this.getToken()
     await this.getId()
+    this.showCustomer()
   }
 
   async getToken () {
@@ -50,6 +53,11 @@ export default class AddCheckin extends Component{
       this.setState({
         id: JSON.parse(key)
       }))
+  }
+
+  showCustomer = () => {
+    this.props.getCustomer(id = this.state.id, token = this.state.token)
+    console.log(this.props.customer, ">>>>>>>...")
   }
 
 //   EditRoom = () => {
@@ -85,7 +93,14 @@ export default class AddCheckin extends Component{
               style= {{borderWidth: 2, borderColor: 'black', marginTop: 7, borderRadius: 100, fontSize:20, textAlign:'center'}}
             />
             <Text>Customer</Text>
-            <ModalDropdown options={['option 1', 'option 2']}/>
+            <Picker
+              selectedValue={this.state.customer}
+              onValueChange={(customer) => this.setState({customer}) }
+            >
+              {this.props.customer.customer.map((item)=> {
+                return <Picker.Item key={item.id} value={item.id} label={item.name}/>
+              })}
+            </Picker>
             <Text>Duration (minutes)</Text>
             <TextInput
               placeholder=''
@@ -105,6 +120,23 @@ export default class AddCheckin extends Component{
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    customer: state.customer
+  }
+}
+
+const mapDispatchToProps = dispatch =>  {
+  return {
+    getCustomer: (id,token) => dispatch(act.getCustomer(id,token))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddCheckin)
 
 const styles = StyleSheet.create({
 

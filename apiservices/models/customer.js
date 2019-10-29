@@ -8,9 +8,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   customer.associate = function(models) {
     customer.belongsToMany(models.room, {
-      through: models.order,
+      through: 'orders',
       foreignKey: 'customer_id',
-      as: 'room'
+      // as: 'room'
     })
   };
   return customer;
