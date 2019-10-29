@@ -32,7 +32,6 @@ class Room extends Component{
   constructor(){
     super();
     this.state = {
-      id: null,
       token: null,
       name: '',
       roomId: null,
@@ -42,7 +41,6 @@ class Room extends Component{
 
   async componentDidMount(){
     await this.getToken()
-    await this.getId()
     this.showRoom()
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
       this.showRoom()
@@ -57,15 +55,8 @@ class Room extends Component{
   }
 
 
-  async getId () {
-    await AsyncStorage.getItem('id').then(key=>
-      this.setState({
-        id: JSON.parse(key)
-      }))
-  }
-
   showRoom = () => {
-    this.props.getRoom(id = this.state.id, token = this.state.token)
+    this.props.getRoom(token = this.state.token)
     console.log(this.props.room, ">>>>>>>...")
   }
 
@@ -228,7 +219,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch =>  {
   return {
-    getRoom: (id,token) => dispatch(act.getRoom(id,token))
+    getRoom: (token) => dispatch(act.getRoom(token))
   }
 }
 export default connect(

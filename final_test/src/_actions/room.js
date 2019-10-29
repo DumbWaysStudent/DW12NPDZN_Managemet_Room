@@ -2,7 +2,7 @@ import axios from 'axios'
 import config from '../../config-env'
 
 
-export const getRoom = (id, token) => {
+export const getRoom = (token) => {
     return {
       type: 'GET_ROOMS',
       payload: axios({
@@ -15,7 +15,7 @@ export const getRoom = (id, token) => {
       })
     }}
   
-export const getCustomer = (id, token) => {
+export const getCustomer = (token) => {
   return {
     type: 'GET_CUSTOMERS',
     payload: axios({
@@ -28,7 +28,7 @@ export const getCustomer = (id, token) => {
     })
   }}
 
-  export const getOrder = (id, token) => {
+  export const getOrder = (token) => {
     return {
       type: 'GET_ORDERS',
       payload: axios({

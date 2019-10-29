@@ -31,7 +31,6 @@ class Customer extends Component{
   constructor(){
     super();
     this.state = {
-      id: null,
       token: null,
       name: '',
       identity_number: '',
@@ -42,7 +41,6 @@ class Customer extends Component{
 
   async componentDidMount(){
     await this.getToken()
-    await this.getId()
     this.showCustomer()
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
       this.showCustomer()
@@ -54,20 +52,12 @@ class Customer extends Component{
     const getToken = await AsyncStorage.getItem('token')
       this.setState({
         token: getToken
-      })
-      
+      })   
   }
 
-
-  async getId () {
-    await AsyncStorage.getItem('id').then(key=>
-      this.setState({
-        id: JSON.parse(key)
-      }))
-  }
 
   showCustomer = () => {
-    this.props.getCustomer(id = this.state.id, token = this.state.token)
+    this.props.getCustomer(token = this.state.token)
     console.log(this.props.customer, ">>>>>>>...")
   }
 
@@ -272,7 +262,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch =>  {
   return {
-    getCustomer: (id,token) => dispatch(act.getCustomer(id,token))
+    getCustomer: (token) => dispatch(act.getCustomer(token))
   }
 }
 export default connect(

@@ -27,8 +27,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
         isDisabled: true,
         username: "",
         password: null,
-        token: "",
-        id: null
+        token: undefined,
+        id: ""
         
       }}
       
@@ -44,14 +44,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
         }
       }).then(res => {
 
-        this.setState({
-          token: res.data.token,
-          id: res.data.user.id
-        })
-
-        
-
         if (typeof res.data.token !== 'undefined') {
+          this.setState({
+            token: res.data.token,
+            id: res.data.user.id
+          })
           AsyncStorage.setItem('token', this.state.token)
           AsyncStorage.setItem('id', JSON.stringify(this.state.id))
           this.props.navigation.navigate('Room')

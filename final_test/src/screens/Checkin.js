@@ -23,14 +23,13 @@ import {connect} from 'react-redux'
 import * as act from '../_actions/room'
 import config from '../../config-env'
 import axios from 'axios'
-
+import CountDown from 'react-native-countdown-component'
 
 class Checkin extends Component{
 
   constructor(){
     super();
     this.state = {
-      id: null,
       token: null,
       name: '',
       roomId: null,
@@ -44,7 +43,6 @@ class Checkin extends Component{
 
   async componentDidMount(){
     await this.getToken()
-    await this.getId()
     this.showOrder()
     this.showCustomer()
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
@@ -61,20 +59,13 @@ class Checkin extends Component{
       })    
   }
 
-  async getId () {
-    await AsyncStorage.getItem('id').then(key=>
-      this.setState({
-        id: JSON.parse(key)
-      }))
-  }
 
   showOrder = () => {
-    this.props.getOrder(id = this.state.id, token = this.state.token)
+    this.props.getOrder(token = this.state.token)
   }
 
   showCustomer = () => {
-    this.props.getCustomer(id = this.state.id, token = this.state.token)
-    console.log(this.props.customer, ">>>>>>>...")
+    this.props.getCustomer(token = this.state.token)
   }
 
   handleModalCheckin = (name,roomId) => {
@@ -83,7 +74,6 @@ class Checkin extends Component{
       roomId 
     })
     this.refs.modalCheckin.open()
-    
   } 
 
   checkin = () => {
@@ -140,8 +130,21 @@ class Checkin extends Component{
         durationCO: 0
       })
       this.showOrder()
-    })
-    
+    })  
+  }
+
+  checkoutTimer = (orderId) => {
+    axios({
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `Bearer ${this.state.token}`
+      },
+      url: `${config.API_URL}/order/${orderId}`,
+      data: {}
+    }).then(res => {
+      this.showOrder()
+    })  
   }
 
   render(){
@@ -169,8 +172,16 @@ class Checkin extends Component{
                      
                       onPress={() => this.handleModalCheckout(item.name, item.id, item.customers[0].name, item.customers[0].id, item.customers[0].orders.id, item.customers[0].orders.duration)}
                     >
-                        <Text style={styles.roomText}>{item.name}</Text>
+                      <Text style={styles.roomText}>{item.name}</Text>
                     </TouchableOpacity> 
+                    <CountDown
+                      until={(item.customers[0].orders.duration)*60}
+                      size={10}
+                      digitStyle={styles.digitStyle}
+                      timeToShow={['M','S']}
+                      timeLabels={{}}
+                      onFinish={() => this.checkoutTimer(item.customers[0].orders.id)}
+                    />
                   </View>):
                 (<View style={[styles.card, {backgroundColor: '#42f58a'}]}>
                   <TouchableOpacity
@@ -269,6 +280,7 @@ class Checkin extends Component{
                   editable={false}
                   style= {styles.TextInput}
                 />
+                
               </View>
               <View style={{alignItems: 'center'}}>
                 <Row>
@@ -305,9 +317,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch =>  {
   return {
-    getOrder: (id,token) => dispatch(act.getOrder(id,token)),
-    getRoom: (id,token) => dispatch(act.getRoom(id,token)),
-    getCustomer: (id,token) => dispatch(act.getCustomer(id,token))
+    getOrder: (token) => dispatch(act.getOrder(token)),
+    getRoom: (token) => dispatch(act.getRoom(token)),
+    getCustomer: (token) => dispatch(act.getCustomer(token))
 
   }
 }
@@ -365,4 +377,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontWeight: 'bold'
   },
+  digitStyle: {
+    backgroundColor: '#FFF', 
+    marginBottom: -28, 
+    marginTop: 2
+  }
 })
