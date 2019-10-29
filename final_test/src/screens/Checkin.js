@@ -166,10 +166,7 @@ class Checkin extends Component{
                   {item.customers.length > 0 ?
                   (<View style={[styles.card,{backgroundColor: '#bac2bd'}]}>
                     <TouchableOpacity
-                      // onPress={() => this.props.navigation.navigate('Checkout',{
-                      //   roomId: item.id,
-                      //   name: item.name
-                      // })}
+                     
                       onPress={() => this.handleModalCheckout(item.name, item.id, item.customers[0].name, item.customers[0].id, item.customers[0].orders.id, item.customers[0].orders.duration)}
                     >
                         <Text style={styles.roomText}>{item.name}</Text>

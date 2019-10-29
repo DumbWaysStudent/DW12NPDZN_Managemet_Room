@@ -23,10 +23,7 @@ import Checkin from './src/screens/Checkin'
 import Customer from './src/screens/Customer'
 import Setting from './src/screens/Setting'
 import Login from './src/screens/Login'
-import AddCustomer from './src/screens/AddCustomer'
-import EditCustomer from './src/screens/EditCustomer'
-import AddCheckin from './src/screens/AddCheckin'
-import Checkout from './src/screens/Checkout'
+
 
 import store from './src/_redux/store'
 
@@ -63,14 +60,6 @@ const CheckinStack = createStackNavigator(
       title: 'Check In',
       navigationOptions: {header: null},
     },
-    AddCheckin: {
-      screen:AddCheckin,
-      title: 'Add Check In',
-    },
-    Checkout: {
-      screen:Checkout,
-      title: 'Check Out',
-    },
   },
   {
     initialRouteName: 'Checkin',
@@ -96,14 +85,6 @@ const CustomerStack = createStackNavigator(
       screen:Customer,
       title: 'Customer',
       navigationOptions: {header: null},
-    },
-    AddCustomer: {
-      screen:AddCustomer,
-      title: 'Add Customer',
-    },
-    EditCustomer: {
-      screen:EditCustomer,
-      title: 'Edit Customer',
     }
   },
   {

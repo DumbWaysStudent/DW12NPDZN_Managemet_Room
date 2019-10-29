@@ -131,10 +131,6 @@ class Room extends Component{
               renderItem = {({item}) => 
               <View style={styles.card}>
                 <TouchableOpacity
-                  // onPress={() => this.props.navigation.navigate('EditRoom',{
-                  //   roomId: item.id,
-                  //   name: item.name
-                  // })}
                   onPress={() => this.handleModalEdit(item.name, item.id)}
                 >
                     <Text style={styles.roomText}>{item.name}</Text>
