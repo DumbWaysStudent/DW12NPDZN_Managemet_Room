@@ -75,3 +75,26 @@ export const getCustomer = (token) => {
         })
       }
     }
+
+    export const checkin = (token,roomId,customerId,duration) => {
+      return {
+        type: 'CHECKIN',
+        payload: axios({
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            'authorization': `Bearer ${token}`
+          },
+          url: `${config.API_URL}/checkin`,
+          data: {
+            room_id: roomId,
+            customer_id: customerId,
+            duration: duration
+          }
+        })
+      }
+    }
+
+
+
+    

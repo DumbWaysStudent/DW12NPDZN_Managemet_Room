@@ -77,26 +77,11 @@ class Checkin extends Component{
   } 
 
   checkin = () => {
-    axios({
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `Bearer ${this.state.token}`
-      },
-      url: `${config.API_URL}/checkin`,
-      data: {
-        room_id: this.state.roomId,
-        customer_id: this.state.customerId,
-        duration: this.state.duration
-      }
-    }).then(res => {
-      this.refs.modalCheckin.close()
+    this.props.checkin(token=this.state.token, roomId=this.state.roomId, customerId=this.state.customerId, duration=this.state.duration)
+    this.refs.modalCheckin.close()
       this.setState({
         duration: null
       })
-      this.showOrder()
-    })
-    
   }
 
   handleModalCheckout = (name,roomId,customer,customerId,orderId,durationCO) => {
@@ -319,8 +304,8 @@ const mapDispatchToProps = dispatch =>  {
   return {
     getOrder: (token) => dispatch(act.getOrder(token)),
     getRoom: (token) => dispatch(act.getRoom(token)),
-    getCustomer: (token) => dispatch(act.getCustomer(token))
-
+    getCustomer: (token) => dispatch(act.getCustomer(token)),
+    checkin: (token,roomId,customerId,duration) => dispatch(act.checkin(token,roomId,customerId,duration))
   }
 }
 export default connect(
