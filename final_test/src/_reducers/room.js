@@ -1,3 +1,4 @@
+
 const initialState = {
     room: [],
     error: null,
@@ -18,6 +19,23 @@ const initialState = {
           isLoading: false,
         };
       case `GET_ROOMS_REJECTED`:
+        return {
+          ...state,
+          error: true,
+          isLoading: false,
+        };
+      case `ADD_ROOM_PENDING`:
+        return {
+          ...state,
+          isLoading: true,
+        };
+      case `ADD_ROOM_FULFILLED`:
+        return {
+          ...state,
+          room: state.room.concat(action.payload.data.data),
+          isLoading: false,
+        };
+      case `ADD_ROOM_REJECTED`:
         return {
           ...state,
           error: true,

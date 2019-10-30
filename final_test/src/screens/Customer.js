@@ -61,23 +61,9 @@ class Customer extends Component{
     console.log(this.props.customer, ">>>>>>>...")
   }
 
-  AddCustomer = () => {
-    axios({
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `Bearer ${this.state.token}`
-      },
-      url: `${config.API_URL}/customer`,
-      data: {
-        name: this.state.name,
-        identity_number: this.state.identity_number,
-        phone_number: this.state.phone_number
-      }
-    }).then(res => {
-      this.refs.modalAddCustomer.close()
-      this.showCustomer()
-    })
+  addCustomer = () => {
+    this.props.addCustomer(token=this.state.token, name= this.state.name, identity_number= this.state.identity_number, phone_number= this.state.phone_number)
+    this.refs.modalAddCustomer.close()
   }
 
   handleModalEdit = (customerId,name,identity_number,phone_number ) => {
@@ -190,7 +176,7 @@ class Customer extends Component{
                     </Button>
                     <Button 
                       style={styles.ButtonSave} 
-                      onPress={() => this.AddCustomer()}
+                      onPress={() => this.addCustomer()}
                     >
                         <Text>Save</Text>
                     </Button>
@@ -262,7 +248,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch =>  {
   return {
-    getCustomer: (token) => dispatch(act.getCustomer(token))
+    getCustomer: (token) => dispatch(act.getCustomer(token)),
+    addCustomer: (token,name,identity_number,phone_number) => dispatch(act.addCustomer(token,name,identity_number,phone_number))
   }
 }
 export default connect(

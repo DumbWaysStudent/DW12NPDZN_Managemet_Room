@@ -9,7 +9,9 @@ const Order = models.order
 const Customer = models.customer
 
 exports.roomIndex = (req,res) => {
-    Room.findAll().then(room=>res.send(room))
+    Room.findAll({
+        attributes: {exclude: ['createdAt', 'updatedAt']}
+    }).then(room=>res.send(room))
 }
 
 exports.roomStore = (req,res) => {
@@ -17,7 +19,10 @@ exports.roomStore = (req,res) => {
         name: req.body.name
     })
     .then(room=>{res.send({
-        room,
+        data: {
+            id: room.id,
+            name: room.name
+        },
         message: "Success"
     })})
 }
@@ -34,8 +39,11 @@ exports.roomUpdate = (req,res) => {
     })})
 }
 
+
 exports.customerIndex = (req,res) => {
-    Customer.findAll().then(customer=>res.send(customer))
+    Customer.findAll({
+        attributes: {exclude: ['createdAt', 'updatedAt']}
+    }).then(customer=>res.send(customer))
 }
 
 exports.customerStore = (req,res) => {
@@ -46,7 +54,13 @@ exports.customerStore = (req,res) => {
         image: req.body.image
     })
     .then(customer=>{res.send({
-        customer,
+        data: {
+            id: customer.id,
+            name: customer.name,
+            identity_number: customer.identity_number,
+            phone_number: customer.phone_number,
+            image: customer.image
+        },
         message: "Success"
     })})
 }
@@ -66,32 +80,21 @@ exports.customerUpdate = (req,res) => {
     })})
 }
 
-exports.orderIndex = (req,res) => {
-    Order.findAll({
-        where: {is_done : false },
-        include: [
-            {
-                model: Room,
-                as: 'roomId',
-            },{
-                model: Customer,
-                as: 'customerId'
-            }]  
-    }).then(order=>res.send(order))
-}
 
 exports.orderRoomIndex = (req,res) => {
     Room.findAll({
         include: [
             {
                 model: Customer,
+                attributes: {exclude: ['createdAt', 'updatedAt']},
                 through: {
                     model: Order,
                     where: {is_done: false},
+                    attributes: {exclude: ['createdAt', 'updatedAt']}
                 }     
             }
-        ]
-            
+        ],
+        attributes: {exclude: ['createdAt', 'updatedAt']}  
     }).then(order=>{res.send(order)})
 }
 

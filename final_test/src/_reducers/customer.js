@@ -23,6 +23,23 @@ const initialState = {
           error: true,
           isLoading: false,
         };
+      case `ADD_CUSTOMER_PENDING`:
+          return {
+            ...state,
+            isLoading: true,
+          };
+      case `ADD_CUSTOMER_FULFILLED`:
+        return {
+          ...state,
+          customer: state.customer.concat(action.payload.data.data),
+          isLoading: false,
+        };
+      case `ADD_CUSTOMER_REJECTED`:
+        return {
+          ...state,
+          error: true,
+          isLoading: false,
+        };
       default:
         return state;
     }

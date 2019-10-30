@@ -1,7 +1,6 @@
 import axios from 'axios'
 import config from '../../config-env'
 
-
 export const getRoom = (token) => {
     return {
       type: 'GET_ROOMS',
@@ -40,3 +39,39 @@ export const getCustomer = (token) => {
         url: `${config.API_URL}/checkin`
       })
     }}
+
+    export const addRoom = (token, name) => {
+      return {
+        type:  'ADD_ROOM',
+        payload:  axios({
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            'authorization': `Bearer ${token}`
+          },
+          url: `${config.API_URL}/room`,
+          data: {
+            name: name,
+          }
+        })
+      }
+    }
+
+    export const addCustomer = (token,name,identity_number,phone_number) => {
+      return {
+        type: 'ADD_CUSTOMER',
+        payload: axios({
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            'authorization': `Bearer ${token}`
+          },
+          url: `${config.API_URL}/customer`,
+          data: {
+            name: name,
+            identity_number: identity_number,
+            phone_number: phone_number
+          }
+        })
+      }
+    }

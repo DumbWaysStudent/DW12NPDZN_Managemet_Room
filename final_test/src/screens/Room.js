@@ -60,21 +60,9 @@ class Room extends Component{
     console.log(this.props.room, ">>>>>>>...")
   }
 
-  AddRoom = () => {
-    axios({
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `Bearer ${this.state.token}`
-      },
-      url: `${config.API_URL}/room`,
-      data: {
-        name: this.state.name,
-      }
-    }).then(res => {
-      this.refs.modalAdd.close()
-      this.showRoom()
-    })
+  addRoom = () => {
+    this.props.addRoom(token = this.state.token, name = this.state.name)
+    this.refs.modalAdd.close()
   }
 
   handleModalEdit = (name,roomId) => {
@@ -165,7 +153,7 @@ class Room extends Component{
                   </Button>
                   <Button 
                     style={styles.ButtonSave} 
-                    onPress={() => this.AddRoom()}
+                    onPress={() => this.addRoom()}
                   >
                       <Text>Save</Text>
                   </Button>
@@ -213,13 +201,14 @@ class Room extends Component{
 
 const mapStateToProps = state => {
   return {
-    room: state.room
+    room: state.room,
   }
 }
 
 const mapDispatchToProps = dispatch =>  {
   return {
-    getRoom: (token) => dispatch(act.getRoom(token))
+    getRoom: (token) => dispatch(act.getRoom(token)),
+    addRoom: (token,name) => dispatch(act.addRoom(token,name))
   }
 }
 export default connect(

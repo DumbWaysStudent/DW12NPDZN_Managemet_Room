@@ -11,7 +11,7 @@ import {
   Icon,  
   } 
   from 'native-base';
-import { StyleSheet, Image, Dimensions} from 'react-native'
+import { StyleSheet, Image, Dimensions, ToastAndroid} from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-community/async-storage'
 import config from '../../config-env'
@@ -53,7 +53,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
           AsyncStorage.setItem('id', JSON.stringify(this.state.id))
           this.props.navigation.navigate('Room')
         } else {
-          alert('Login failed!')
+          ToastAndroid.showWithGravity(
+            'Wrong email or password',
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+          );
         }
       })
     }

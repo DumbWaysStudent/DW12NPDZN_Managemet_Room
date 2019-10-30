@@ -7,11 +7,13 @@ import customer from '../_reducers/customer'
 import user from '../_reducers/user'
 import order from '../_reducers/checkin'
 
+
 const reducers = combineReducers({
     room,
     customer,
     user,
-    order
+    order,
+   
 })
   
 const store = createStore(
