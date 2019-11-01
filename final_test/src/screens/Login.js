@@ -139,7 +139,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
                   </Item>
                 </Form>
                 <Button 
-                warning disabled = {this.state.isDisabled} rounded block style={styles.button}
+                primary disabled = {this.state.isDisabled} rounded block style={styles.button}
                 onPress={() => this.userLogin() }
                 >
                   <Text >LOG IN</Text>
@@ -157,14 +157,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#f27980',
+    backgroundColor: '#E7F2F8',
   },
   center: {
     backgroundColor: 'white',
     margin: 15,
     paddingVertical: 30,
     borderRadius: 15,
-    opacity: 0.75,
+    opacity: 0.9,
   },
   title:{
     alignItems: "center", 

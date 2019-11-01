@@ -10,7 +10,7 @@ const port = Number (process.env.PORT || 4001)
 const Storage = multer.diskStorage({
 	destination(req, file, callback) {
 	console.log(__dirname)
-	  callback(null, __dirname+'/images')
+	  callback(null, './images')
 	},
 	filename(req, file, callback) {
 	  callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`)
@@ -41,12 +41,12 @@ app.group("/api/v1", (router) => {
 	router.put('/room/:roomId', authenticated, RoomController.roomUpdate)
 
 	router.get('/customers', authenticated, RoomController.customerIndex)
-	router.post('/customer', authenticated, RoomController.customerStore)
-	router.put('/customer/:customerId', authenticated, RoomController.customerUpdate)
+	router.post('/customer', upload.single('photo'),authenticated, RoomController.customerStore)
+	router.put('/customer/:customerId', upload.single('photo'),authenticated, RoomController.customerUpdate)
 
 	router.get('/checkin', authenticated, RoomController.orderRoomIndex)
 	router.post('/checkin', authenticated, RoomController.orderRoomStore)
-	router.put('/order/:orderId', authenticated, RoomController.orderUpdate)
+	router.put('/order/:orderId', authenticated, RoomController.orderRoomUpdate)
 
 })
 

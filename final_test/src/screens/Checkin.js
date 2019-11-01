@@ -3,26 +3,20 @@ import {
   Container, 
   Content, 
   View, 
-  Text, 
-  Item, 
-  Input, 
+  Text,  
   Button, 
   Header,
   Body,
   Title,
   Row,
-  Icon,  
-
   } 
   from 'native-base';
-import { StyleSheet, FlatList, Picker, TouchableOpacity, ScrollView, Dimensions, Image} from 'react-native'
+import { StyleSheet, FlatList, Picker, TouchableOpacity} from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage'
 import Modal from 'react-native-modalbox';
 import {connect} from 'react-redux'
 import * as act from '../_actions/room'
-import config from '../../config-env'
-import axios from 'axios'
 import CountDown from 'react-native-countdown-component'
 
 class Checkin extends Component{
@@ -84,8 +78,8 @@ class Checkin extends Component{
       })
   }
 
-  handleModalCheckout = (name,roomId,customer,customerId,orderId,durationCO) => {
-    this.setState({
+  handleModalCheckout = async (name,roomId,customer,customerId,orderId,durationCO) => {
+    await this.setState({
       name,
       roomId,
       customer,
@@ -96,50 +90,27 @@ class Checkin extends Component{
     this.refs.modalCheckout.open()
   } 
 
-  checkout = () => {
-    axios({
-      method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `Bearer ${this.state.token}`
-      },
-      url: `${config.API_URL}/order/${this.state.orderId}`,
-      data: {
-        room_id: this.state.roomId,
-        customer_id: this.state.customerId,
-        duration: this.state.duration
-      }
-    }).then(res => {
-      this.refs.modalCheckout.close()
-      this.setState({
-        durationCO: 0
-      })
-      this.showOrder()
-    })  
+  checkoutRoom = () => {
+    this.props.checkout(token=this.state.token, orderId=this.state.orderId)
+    this.setState({
+      durationCO: 0
+    })
+    this.refs.modalCheckout.close()
   }
 
   checkoutTimer = (orderId) => {
-    axios({
-      method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `Bearer ${this.state.token}`
-      },
-      url: `${config.API_URL}/order/${orderId}`,
-      data: {}
-    }).then(res => {
-      this.showOrder()
-    })  
+    this.setState({orderId}) 
+    this.props.checkout(token=this.state.token, orderId=this.state.orderId)
   }
 
   render(){
 
     return(
       <Container>
-        <View style={{ flex: 1, backgroundColor: '#f27980'}}>
-          <Header style={{backgroundColor: "#5dadec" }}>
+        <View style={{ flex: 1, backgroundColor: '#E7F2F8'}}>
+          <Header style={{backgroundColor: "#537d91" }}>
             <Body style={{alignItems: 'center'}}>
-                <Title style={{fontWeight: 'bold', color:'black'}}>Check In</Title>
+                <Title style={{fontWeight: 'bold', color:'white'}}>Check In</Title>
             </Body>
           </Header>
           <Content padder >
@@ -277,7 +248,7 @@ class Checkin extends Component{
                   </Button>
                   <Button
                     style={styles.ButtonSave}
-                    onPress={()=>this.checkout()}
+                    onPress={()=>this.checkoutRoom()}
                   >
                     <Text>Check Out</Text>
                   </Button>
@@ -305,7 +276,8 @@ const mapDispatchToProps = dispatch =>  {
     getOrder: (token) => dispatch(act.getOrder(token)),
     getRoom: (token) => dispatch(act.getRoom(token)),
     getCustomer: (token) => dispatch(act.getCustomer(token)),
-    checkin: (token,roomId,customerId,duration) => dispatch(act.checkin(token,roomId,customerId,duration))
+    checkin: (token,roomId,customerId,duration) => dispatch(act.checkin(token,roomId,customerId,duration)),
+    checkout: (token,orderId) => dispatch(act.checkout(token,orderId))
   }
 }
 export default connect(
@@ -330,7 +302,7 @@ const styles = StyleSheet.create({
   modal: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f27980',
+    backgroundColor: '#E7F2F8',
     height: 420,
     width: 320,
     borderRadius: 10

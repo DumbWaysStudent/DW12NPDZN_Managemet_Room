@@ -23,6 +23,7 @@ import config from '../../config-env'
 import axios from 'axios'
 import {connect} from 'react-redux'
 import * as act from '../_actions/room'
+import ImagePicker from 'react-native-image-picker';
 
 
 
@@ -33,9 +34,12 @@ class Customer extends Component{
     this.state = {
       token: null,
       name: '',
+      image: null,
       identity_number: '',
       phone_number: '',
-      customerId: null
+      customerId: null,
+      photo: null,
+      photoEdit: null
     }
   }
 
@@ -58,52 +62,79 @@ class Customer extends Component{
 
   showCustomer = () => {
     this.props.getCustomer(token = this.state.token)
-    console.log(this.props.customer, ">>>>>>>...")
   }
 
-  addCustomer = () => {
-    this.props.addCustomer(token=this.state.token, name= this.state.name, identity_number= this.state.identity_number, phone_number= this.state.phone_number)
+  addCustomer = async () => {
+    await this.props.addCustomer(token=this.state.token, name= this.state.name, identity_number= this.state.identity_number, phone_number= this.state.phone_number, photo=this.state.photo)
+    this.refs.modalAddCustomer.close()
+    this.setState({photo: null})
+  }
+
+  cancelAdd = () => {
+    this.setState({photo: null})
     this.refs.modalAddCustomer.close()
   }
 
-  handleModalEdit = (customerId,name,identity_number,phone_number ) => {
-    this.setState({
+  handleModalEdit = async (customerId,name,identity_number,phone_number,image ) => {
+    await this.setState({
       customerId,
       name,
       identity_number,
       phone_number,
+      image
     })
     this.refs.modalEditCustomer.open()
   } 
 
-  EditCustomer = () => {
-    axios({
-      method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `Bearer ${this.state.token}`
-      },
-      url: `${config.API_URL}/customer/${this.state.customerId}`,
-      data: {
-        name: this.state.name,
-        identity_number: this.state.identity_number,
-        phone_number: this.state.phone_number,
-        image: ''
+  editCustomer = async () => {
+    await this.props.editCustomer(token=this.state.token, customerId=this.state.customerId ,name= this.state.name, identity_number= this.state.identity_number, phone_number= this.state.phone_number, photoEdit=this.state.photoEdit)
+    this.setState({photoEdit: null})
+    this.refs.modalEditCustomer.close()
+  }
+
+  cancelEdit = () => {
+    this.setState({photoEdit: null})
+    this.refs.modalEditCustomer.close()
+  }
+
+
+  choosePhoto = () => {
+    const options = {
+      noData: true,
+      quality: 0.1,
+      maxWidth: 500,
+      maxHeight: 500,
+    }
+    ImagePicker.showImagePicker(options, response => {
+      if (response.uri) {
+        this.setState({ photo: response })
+        console.log(this.state.photo)
       }
-    }).then(res => {
-      this.refs.modalEditCustomer.close()
-      this.showCustomer()
     })
   }
 
+  choosePhotoEdit = () => {
+    const options = {
+      noData: true,
+      quality: 0.1,
+      maxWidth: 500,
+      maxHeight: 500,
+    }
+    ImagePicker.showImagePicker(options, response => {
+      if (response.uri) {
+        this.setState({ photoEdit: response })
+      }
+    })
+  }
+  
   render(){
 
     return(
       <Container>
-        <View style={{ flex: 1, backgroundColor: '#f27980'}}>
-          <Header style={{backgroundColor: "#5dadec" }}>
+        <View style={{ flex: 1, backgroundColor: '#E7F2F8'}}>
+          <Header style={{backgroundColor: "#537d91" }}>
             <Body style={{alignItems: 'center'}}>
-                <Title style={{fontWeight: 'bold', color:'black'}}>Customer</Title>
+                <Title style={{fontWeight: 'bold', color:'white'}}>Customer</Title>
             </Body>
           </Header>
           <Content padder>
@@ -115,10 +146,12 @@ class Customer extends Component{
                 renderItem = {({item}) => 
                 <View style={styles.card}>
                   <TouchableOpacity   
-                    onPress={() => this.handleModalEdit(item.id, item.name, item.identity_number, item.phone_number)}
+                    onPress={() => this.handleModalEdit(item.id, item.name, item.identity_number, item.phone_number, item.image)}
                   >
                     <Row>
-                      <Image style={styles.Img} source={require('./user.png')}></Image>
+                      {item.image == null?
+                      (<Image style={styles.Img} source={require('./user.png')}></Image>):
+                      (<Image style={styles.Img} source={{uri: item.image}}></Image>)}
                       <View style={{justifyContent: 'center', marginLeft: 5}}>
                         <Text style={styles.customer}>{item.name}</Text>
                         <Text style={styles.subCustomer}>{item.identity_number}</Text>
@@ -132,7 +165,7 @@ class Customer extends Component{
             </View>
           </Content>
           <Fab
-            style={{ backgroundColor: '#5dadec' }}
+            style={{ backgroundColor: '#537d91' }}
             position="bottomRight" 
           >
             <TouchableOpacity onPress={() => this.refs.modalAddCustomer.open()}>
@@ -166,20 +199,27 @@ class Customer extends Component{
                   onChangeText={phone_number => this.setState({ phone_number })}
                   style= {styles.TextInput}
                 />
+                <TouchableOpacity
+                  onPress = {()=>this.choosePhoto()}
+                >
+                  {this.state.photo == null?
+                  (<Image style={styles.ImgModal} source={require('./user.png')}></Image>):
+                  (<Image style={styles.ImgModal} source={this.state.photo}></Image>)}
+                </TouchableOpacity>
                 <View style={{alignItems: 'center'}}>
                   <Row>
-                    <Button 
-                      style={styles.ButtonCancel} 
-                      onPress={() => this.refs.modalAddCustomer.close()}
-                    >
-                      <Text>Cancel</Text>
-                    </Button>
-                    <Button 
-                      style={styles.ButtonSave} 
-                      onPress={() => this.addCustomer()}
-                    >
-                        <Text>Save</Text>
-                    </Button>
+                      <Button 
+                        style={styles.ButtonCancel} 
+                        onPress={() => this.cancelAdd()}
+                      >
+                        <Text>Cancel</Text>
+                      </Button>
+                      <Button 
+                        style={styles.ButtonSave} 
+                        onPress={() => this.addCustomer()}
+                      >
+                          <Text>Save</Text>
+                      </Button>
                   </Row>  
                 </View>      
               </View>
@@ -215,17 +255,24 @@ class Customer extends Component{
                   onChangeText={phone_number => this.setState({ phone_number })}
                   style= {styles.TextInput}
                 />
+                <TouchableOpacity
+                  onPress = {()=>this.choosePhotoEdit()}
+                >
+                  {this.state.photoEdit == null?
+                  (<Image style={styles.ImgModal} source={{uri: this.state.image}}></Image>):
+                  (<Image style={styles.ImgModal} source={this.state.photoEdit}></Image>)}
+                </TouchableOpacity>
                 <View style={{alignItems: 'center'}}>
                   <Row>
                     <Button 
                       style={styles.ButtonCancel} 
-                      onPress={() => this.refs.modalEditCustomer.close()}
+                      onPress={() => this.cancelEdit()}
                     >
                       <Text>Cancel</Text>
                     </Button>
                     <Button 
                       style={styles.ButtonSave} 
-                      onPress={() => this.EditCustomer()}
+                      onPress={() => this.editCustomer()}
                     >
                         <Text>Save</Text>
                     </Button>
@@ -249,7 +296,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch =>  {
   return {
     getCustomer: (token) => dispatch(act.getCustomer(token)),
-    addCustomer: (token,name,identity_number,phone_number) => dispatch(act.addCustomer(token,name,identity_number,phone_number))
+    addCustomer: (token,name,identity_number,phone_number,photo) => dispatch(act.addCustomer(token,name,identity_number,phone_number,photo)),
+    editCustomer: (token,customerId,name,identity_number,phone_number,photoEdit) => dispatch(act.editCustomer(token,customerId,name,identity_number,phone_number,photoEdit))
   }
 }
 export default connect(
@@ -284,11 +332,20 @@ const styles = StyleSheet.create({
     height:75, 
     borderRadius: 100,
   },
+  ImgModal: {
+    borderWidth: 1, 
+    borderColor: "black", 
+    alignSelf: 'center',
+    margin: 5,
+    width: 75, 
+    height:75, 
+    borderRadius: 100,
+  },
   modal: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f27980',
-    height: 420,
+    backgroundColor: '#E7F2F8',
+    height: 480,
     width: 320,
     borderRadius: 10
   },

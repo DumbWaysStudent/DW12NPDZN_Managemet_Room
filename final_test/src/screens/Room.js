@@ -73,32 +73,19 @@ class Room extends Component{
     this.refs.modalEdit.open()
   } 
 
-
-  EditRoom = () => {
-    axios({
-      method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `Bearer ${this.state.token}`
-      },
-      url: `${config.API_URL}/room/${this.state.roomId}`,
-      data: {
-        name: this.state.name,
-      }
-    }).then(res => {
-      this.refs.modalEdit.close()
-      this.showRoom()
-    })
+  editRoom = () => {
+    this.props.editRoom(token = this.state.token, name = this.state.name, roomId=this.state.roomId)
+    this.refs.modalEdit.close()
   }
 
 
   render(){
     return(
       <Container>
-        <View style={{ flex: 1, backgroundColor: '#f27980'}}>
-          <Header style={{backgroundColor: "#5dadec" }}>
+        <View style={{ flex: 1, backgroundColor: '#E7F2F8'}}>
+          <Header style={{backgroundColor: "#537d91" }}>
             <Body style={{alignItems: 'center'}}>
-                <Title style={{fontWeight: 'bold', color:'black'}}>Room</Title>
+                <Title style={{fontWeight: 'bold', color:'white'}}>Room</Title>
             </Body>
           </Header>  
           <Content padder>
@@ -121,7 +108,7 @@ class Room extends Component{
           </Content>
           
           <Fab
-            style={{ backgroundColor: '#5dadec' }}
+            style={{ backgroundColor: '#537d91' }}
             position="bottomRight" 
           >
             <TouchableOpacity 
@@ -185,7 +172,7 @@ class Room extends Component{
                   </Button>
                   <Button 
                     style={styles.ButtonSave} 
-                    onPress={() => this.EditRoom()}
+                    onPress={() => this.editRoom()}
                   >
                       <Text>Save</Text>
                   </Button>
@@ -208,7 +195,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch =>  {
   return {
     getRoom: (token) => dispatch(act.getRoom(token)),
-    addRoom: (token,name) => dispatch(act.addRoom(token,name))
+    addRoom: (token,name) => dispatch(act.addRoom(token,name)),
+    editRoom: (token,name,roomId) => dispatch(act.editRoom(token,name,roomId))
   }
 }
 export default connect(
@@ -225,18 +213,18 @@ const styles = StyleSheet.create({
     height: 120,
     justifyContent: 'center',
     borderRadius: 10,
-    borderColor: 'white',
+    borderColor: '#537d91',
   },
   roomText: {
     textAlign: 'center',
     fontSize: 30,
-    color: '#5dadec',
+    color: '#537d91',
     fontWeight: 'bold'
   },
   modal: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f27980',
+    backgroundColor: '#E7F2F8',
     height: 200,
     width: 300,
     borderRadius: 10

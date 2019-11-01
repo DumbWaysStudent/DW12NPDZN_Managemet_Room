@@ -66,10 +66,10 @@ class Setting extends Component{
 
     return(
       <Container>
-        <View style={{ flex: 1, backgroundColor: '#f27980', justifyContent: 'center'}}>
-        <Header style={{backgroundColor: "#5dadec" }}>
+        <View style={{ flex: 1, backgroundColor: '#E7F2F8', justifyContent: 'center'}}>
+        <Header style={{backgroundColor: "#537d91" }}>
           <Body style={{alignItems: 'center'}}>
-              <Title style={{fontWeight: 'bold', color:'black'}}>Admin</Title>
+              <Title style={{fontWeight: 'bold', color:'white'}}>Setting</Title>
           </Body>
         </Header>
         <Content style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
@@ -113,7 +113,7 @@ export default connect(
 
 const styles = StyleSheet.create({
   Img: {
-    borderWidth: 2, 
+    borderWidth: 1, 
     borderColor: "black", 
     alignSelf: 'center',
     margin: 10,

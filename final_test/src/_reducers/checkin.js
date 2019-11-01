@@ -40,6 +40,23 @@ const initialState = {
           error: true,
           isLoading: false,
         };
+      case `CHECKOUT_PENDING`:
+        return {
+          ...state,
+          isLoading: true,
+        };
+      case `CHECKOUT_FULFILLED`:
+        return {
+          ...state,
+          order: action.payload.data,
+          isLoading: false,
+        };
+      case `CHECKOUT_REJECTED`:
+        return {
+          ...state,
+          error: true,
+          isLoading: false,
+        };
       
       default:
         return state;

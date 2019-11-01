@@ -8,6 +8,8 @@ const Room = models.room
 const Order = models.order
 const Customer = models.customer
 
+const ip = `http://192.168.43.122:4001/`
+
 exports.roomIndex = (req,res) => {
     Room.findAll({
         attributes: {exclude: ['createdAt', 'updatedAt']}
@@ -27,16 +29,16 @@ exports.roomStore = (req,res) => {
     })})
 }
 
-exports.roomUpdate = (req,res) => {
-    Room.update({
+exports.roomUpdate = async (req,res) => {
+    await Room.update({
         name: req.body.name
     },
     {where: 
         {id: req.params.roomId
       }})
-    .then(room=>{res.send({
-        message: "Success"
-    })})
+    Room.findAll({
+      attributes: {exclude: ['createdAt', 'updatedAt']}
+    }).then(room=>res.send(room))
 }
 
 
@@ -51,7 +53,7 @@ exports.customerStore = (req,res) => {
         name: req.body.name,
         identity_number:req.body.identity_number,
         phone_number: req.body.phone_number,
-        image: req.body.image
+        image: ip + req.file.path
     })
     .then(customer=>{res.send({
         data: {
@@ -59,25 +61,27 @@ exports.customerStore = (req,res) => {
             name: customer.name,
             identity_number: customer.identity_number,
             phone_number: customer.phone_number,
-            image: customer.image
+            image: ip + req.file.path
         },
         message: "Success"
     })})
 }
 
-exports.customerUpdate = (req,res) => {
-    Customer.update({
+exports.customerUpdate = async (req,res) => {
+    await Customer.update({
         name: req.body.name,
         identity_number:req.body.identity_number,
         phone_number: req.body.phone_number,
-        image: req.body.image
+        image: ip + req.file.path,
+	
     },
     {where: 
         {id: req.params.customerId
       }})
-    .then(customer=>{res.send({
-        message: "Success"
-    })})
+
+    Customer.findAll({
+      attributes: {exclude: ['createdAt', 'updatedAt']}
+    }).then(customer=>res.send(customer))
 }
 
 
@@ -138,19 +142,49 @@ exports.orderRoomStore = async (req,res) => {
       }).then(order=>{res.send(order)})   
 }
 
-exports.orderUpdate = (req,res) => {
-    Order.update({
+// exports.orderUpdate = (req,res) => {
+//     Order.update({
+//         room_id: req.body.room_id,
+//         customer_id: req.body.customer_id,
+//         is_done: true,
+//         is_booked: false,
+//         duration: req.body.duration,
+//         order_end_time: moment().add(req.body.duration, 'minutes')
+//     },
+//     {where: 
+//         {id: req.params.orderId
+//       }})
+//     .then(order=>{res.send({
+//         message: "Success"
+//     })})
+// }
+
+exports.orderRoomUpdate = async (req,res) => {
+  await Order.update({
         room_id: req.body.room_id,
         customer_id: req.body.customer_id,
         is_done: true,
         is_booked: false,
         duration: req.body.duration,
         order_end_time: moment().add(req.body.duration, 'minutes')
-    },
-    {where: 
-        {id: req.params.orderId
-      }})
-    .then(order=>{res.send({
-        message: "Success"
-    })})
+  },
+  {where: 
+    {id: req.params.orderId
+  }})
+  
+  Room.findAll({
+    include: [
+      {
+        model: Customer,
+        attributes: {exclude: ['createdAt', 'updatedAt']},
+        through: {
+          model: Order,
+          where: {is_done: false},
+          attributes: {exclude: ['createdAt', 'updatedAt']}
+        }     
+      }
+    ],
+    attributes: {exclude: ['createdAt', 'updatedAt']}  
+  }).then(order=>{res.send(order)})   
+
 }

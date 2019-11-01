@@ -40,6 +40,23 @@ const initialState = {
           error: true,
           isLoading: false,
         };
+      case `EDIT_CUSTOMER_PENDING`:
+        return {
+          ...state,
+          isLoading: true,
+        };
+      case `EDIT_CUSTOMER_FULFILLED`:
+        return {
+          ...state,
+          customer: action.payload.data,
+          isLoading: false,
+        };
+      case `EDIT_CUSTOMER_REJECTED`:
+        return {
+          ...state,
+          error: true,
+          isLoading: false,
+        };
       default:
         return state;
     }

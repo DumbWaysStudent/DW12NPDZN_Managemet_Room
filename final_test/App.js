@@ -114,12 +114,12 @@ const BottomTab = createBottomTabNavigator({
     },
   }),
   tabBarOptions: {
-    activeTintColor: 'black',
-    inactiveTintColor: '#e5dddd',
+    activeTintColor: '#e5dddd',
+    inactiveTintColor: 'black',
     showLabel:false,
     keyboardHidesTabBar: true,
     style:{
-    backgroundColor: '#5dadec',
+    backgroundColor: '#537d91',
   }} 
 })
 

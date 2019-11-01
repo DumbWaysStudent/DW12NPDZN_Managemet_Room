@@ -41,6 +41,23 @@ const initialState = {
           error: true,
           isLoading: false,
         };
+      case `EDIT_ROOM_PENDING`:
+        return {
+          ...state,
+          isLoading: true,
+        };
+      case `EDIT_ROOM_FULFILLED`:
+        return {
+          ...state,
+          room: action.payload.data,
+          isLoading: false,
+        };
+      case `EDIT_ROOM_REJECTED`:
+        return {
+          ...state,
+          error: true,
+          isLoading: false,
+        };
       default:
         return state;
     }
