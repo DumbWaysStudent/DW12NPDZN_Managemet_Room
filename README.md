@@ -12,7 +12,7 @@ Nyenyak is a mobile app for Hotel/ Apartement's admin. Admin can easily manage c
 
 ## Screenshots
 
-<p float="center">
+<p align="center">
   <img src="./ss1.png" width="800"/>
   <img src="./ss2.png" width="800"/>
 </p>
